@@ -35,24 +35,6 @@ This plugin creates a more **organic breach system**, especially useful for **ev
 * **EXILED API v9.5.2 or newer**
 * SCP\:SL server with plugin support
 
----
-
-### 🔧 Configuration (example)
-
-```yaml
-CassieMessages:
-  Scp096:
-    message: "SCP 0 9 6 containment breach detected"
-  Scp173:
-    message: "SCP 1 7 3 breach in progress"
-  Scp049:
-    message: "SCP 0 4 9 has been released"
-  Scp079:
-    message: "SCP 0 7 9 reconnected to site network"
-```
-
----
-
 ### 🚀 Installation
 
 1. Place the compiled `.dll` file into your `EXILED/Plugins` folder.
