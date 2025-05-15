@@ -15,7 +15,7 @@ namespace AutoBreach
         public override string Author => "Kolo";
         public override string Prefix => "AutoBreach";
         public override Version RequiredExiledVersion => new Version(9, 5, 2);
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 0, 1);
 
         public static Main Instance { get; private set; }
         public static Dictionary<RoleTypeId, CassieMessage> CassieMessagesMap { get; private set; }
