@@ -1,7 +1,10 @@
-﻿using AutoBreach;
+using AutoBreach;
 using Exiled.API.Features;
 using Exiled.Events.Handlers;
+using PlayerRoles;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Handler = Exiled.Events.Handlers;
 //:)
 namespace AutoBreach
@@ -15,11 +18,14 @@ namespace AutoBreach
         public override Version Version => new Version(1, 0, 0);
 
         public static Main Instance { get; private set; }
+        public static Dictionary<RoleTypeId, CassieMessage> CassieMessagesMap { get; private set; }
+
         private AutoBreachEventHandler _eventHandlers;
 
         public override void OnEnabled()
         {
             Instance = this;
+            CassieMessagesMap = Config.CassieMessages.ToDictionary(msg => msg.Role);
             _eventHandlers = new AutoBreachEventHandler();
             Log.Info("Autobreach Enabled");
             base.OnEnabled();
