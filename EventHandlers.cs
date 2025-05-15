@@ -1,4 +1,4 @@
-﻿using Exiled.API.Features;
+using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using Exiled.Events.EventArgs.Player;
 using Exiled.Events.EventArgs.Cassie;
@@ -18,11 +18,19 @@ namespace AutoBreach
             Instance = this;
         }
 
-        // Breaching SCP by Opening doors
-        public void OnInteractingDoor(InteractingDoorEventArgs ev)
+
+
+    // Breaching SCP by Opening doors
+    public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
             if (ev == null || ev.Player == null)
                 return;
+
+            if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp096, out var msg))
+            {
+                Cassie.Message(msg.Message, false, false);
+            }
+
 
             var player = ev.Player;
 
@@ -42,19 +50,22 @@ namespace AutoBreach
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp096);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP096!");
-                    Cassie.Message(AutoBreach.Config.CassieMessages[RoleTypeId.Scp096].message);
+                    if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp096, out var cassieMsg))
+                        Cassie.Message(cassieMsg.Message, false, false);
                 }
                 if (ev.Door == scp173Door)
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp173);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP173!");
-                    Cassie.Message(AutoBreach.Config.CassieMessages[RoleTypeId.Scp173].message);
+                    if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp173, out var cassieMsg))
+                        Cassie.Message(cassieMsg.Message, false, false);
                 }
                 if (ev.Door == scp049Door)
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp049);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP049!");
-                    Cassie.Message(AutoBreach.Config.CassieMessages[RoleTypeId.Scp049].message);
+                    if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp049, out var cassieMsg))
+                        Cassie.Message(cassieMsg.Message, false, false);
                 }
 
             }
@@ -74,7 +85,8 @@ namespace AutoBreach
             {
                 var randomSpectator = spectators[UnityEngine.Random.Range(0, spectators.Count)];
                 randomSpectator.Role.Set(RoleTypeId.Scp079);
-                Cassie.Message(AutoBreach.Config.CassieMessages[RoleTypeId.Scp079].message);
+                if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp079, out var cassieMsg))
+                    Cassie.Message(cassieMsg.Message, false, false);
             }
         }   
     } 
