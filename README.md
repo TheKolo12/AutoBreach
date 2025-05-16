@@ -3,6 +3,7 @@
 **AutoBreach** is a plugin for SCP: Secret Laboratory using the EXILED API. It introduces a dynamic SCP spawn system that automatically **breaches SCPs when their containment doors are opened** or **a generator is activated** — bringing faster and more interactive SCP rounds.
 
 [![downloads](https://img.shields.io/github/downloads/TheKolo12/AutoBreach/total?style=for-the-badge&logo=icloud&color=%233A6D8C)](https://github.com/TheKolo12/AutoBreach/releases/latest)
+![Latest](https://img.shields.io/github/v/release/TheKolo12/AutoBreach?style=for-the-badge&label=Latest%20Release&color=%23D91656)
 ---
 
 ### 🧠 What It Does
