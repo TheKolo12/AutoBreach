@@ -1,4 +1,4 @@
-﻿using PlayerRoles;
+using PlayerRoles;
 
 namespace AutoBreach
 {
@@ -6,6 +6,7 @@ namespace AutoBreach
     {
         public RoleTypeId Role { get; set; }
         public string Message { get; set; }
-        public float Duration { get; set; }
+        public bool Subtiles { get; set; }
+
     }
 }
