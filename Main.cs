@@ -15,7 +15,7 @@ namespace AutoBreach
         public override string Author => "Kolo";
         public override string Prefix => "AutoBreach";
         public override Version RequiredExiledVersion => new Version(9, 5, 2);
-        public override Version Version => new Version(1, 0, 1);
+        public override Version Version => new Version(1, 0, 2);
 
         public static Main Instance { get; private set; }
         public static Dictionary<RoleTypeId, CassieMessage> CassieMessagesMap { get; private set; }
@@ -25,19 +25,19 @@ namespace AutoBreach
         public override void OnEnabled()
         {
             Instance = this;
-            CassieMessagesMap = Config.CassieMessages.ToDictionary(msg => msg.Role);
             _eventHandlers = new AutoBreachEventHandler();
+            CassieMessagesMap = Config.CassieMessages.ToDictionary(msg => msg.Role);
+            RegisterEvent(); 
             Log.Info("Autobreach Enabled");
             base.OnEnabled();
-            RegisterEvent();
         }
         public override void OnDisabled()
         {
+            UnRegisterEvent();
             Instance = null;
             _eventHandlers = null;
             Log.Info("Autobreach Disabled.");
             base.OnDisabled();
-            UnRegisterEvent();
         }
         public void RegisterEvent()
         {
