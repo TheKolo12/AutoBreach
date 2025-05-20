@@ -58,7 +58,7 @@ namespace AutoBreach
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP096!");
 
                     if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp096, out var cassieMsg))
-                        Cassie.Message(cassieMsg.Message, false, true);
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
 
                     ev.Door.ChangeLock(DoorLockType.Isolation);
 
@@ -76,7 +76,7 @@ namespace AutoBreach
                     randomSpectator.Role.Set(RoleTypeId.Scp173);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP173!");
                     if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp173, out var cassieMsg))
-                        Cassie.Message(cassieMsg.Message, false, cassieMsg.Subtiles);
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
 
                     ev.Door.ChangeLock(DoorLockType.Isolation);
 
@@ -93,7 +93,7 @@ namespace AutoBreach
                     randomSpectator.Role.Set(RoleTypeId.Scp049);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP049!");
                     if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp049, out var cassieMsg))
-                        Cassie.Message(cassieMsg.Message, false, cassieMsg.Subtiles);
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
 
                     ev.Door.ChangeLock(DoorLockType.Isolation);
 
@@ -126,7 +126,7 @@ namespace AutoBreach
                     randomSpectator.Role.Set(RoleTypeId.Scp079);
 
                     if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp079, out var cassieMsg))
-                        Cassie.Message(cassieMsg.Message, false, cassieMsg.Subtiles);
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
                 }
             }
         }
