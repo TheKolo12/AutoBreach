@@ -13,13 +13,13 @@ namespace AutoBreach
 
         public bool Debug { get; set; } = false;
 
-        [Description("Cassie for their respective SCP. Format: SCP, Cassie, Subtiles (On or Off)")]
+        [Description("Cassie for their respective SCP. Format: SCP, Content,Message ")]
         public List<CassieMessage> CassieMessages { get; set; } = new()
         {
-            new CassieMessage { Role = RoleTypeId.Scp096, Message = "SCP-096 Has broke the containment!", Subtiles = true },
-            new CassieMessage { Role = RoleTypeId.Scp173, Message = "SCP-173 Has broke the containment!", Subtiles = true },
-            new CassieMessage { Role = RoleTypeId.Scp049, Message = "SCP-049 Has broke the containment", Subtiles = true },
-            new CassieMessage { Role = RoleTypeId.Scp079, Message = "SCP-079 has breached the facility!", Subtiles = true },
+            new CassieMessage { Role = RoleTypeId.Scp096, Content = "SCP-096 Has broke the containment!", Message = "SCP-096 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp173, Content = "SCP-173 Has broke the containment!", Message = "SCP-096 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp049, Content = "SCP-049 Has broke the containment", Message = "SCP-096 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp079, Content = "SCP-079 has breached the facility!", Message = "SCP-096 Has broke the containment!" },
         };
     }
 }
