@@ -21,16 +21,6 @@ This plugin creates a more **organic breach system**, especially useful for **ev
 
 ---
 
-### ⚙️ Features
-
-* 🔁 Automatic SCP assignment from Spectator pool
-* 🔊 Configurable CASSIE announcements for each SCP
-* 🚪 SCP breach triggered by door interaction (096, 173, 049)
-* ⚡ SCP-079 breach triggered by generator activation
-* 🧪 Lightweight and optimized for EXILED 9.x
-
----
-
 ### 📦 Requirements
 
 * **EXILED API v9.5.2 or newer**
