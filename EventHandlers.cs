@@ -11,11 +11,28 @@ using static PlayerList;
 using System;
 using Exiled.API.Enums;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Collections.Generic;
+using Exiled.Events.EventArgs.Server;
+using Exiled.Events.EventArgs.Scp079;
 
 namespace AutoBreach
 {
     public class AutoBreachEventHandler
     {
+        public static readonly Dictionary<RoleTypeId ,int > SCPCount = new()
+    {
+        { RoleTypeId.Scp049, 0 },
+        { RoleTypeId.Scp079, 0 },
+        { RoleTypeId.Scp096, 0 },
+        { RoleTypeId.Scp106, 0 },
+        { RoleTypeId.Scp173, 0 },
+        { RoleTypeId.Scp939, 0 },
+    };
+        public static readonly Dictionary<RoleTypeId, int> BlackoutCount = new()
+    {
+        { RoleTypeId.Scp106, 0 },
+        { RoleTypeId.Scp939, 0 },
+    }; 
         public static AutoBreachEventHandler Instance { get; private set; }
 
         public AutoBreachEventHandler()
@@ -23,17 +40,74 @@ namespace AutoBreach
             Instance = this;
         }
 
-        // Breaching SCP by Opening doors
+        public void OnSpawned (SpawnedEventArgs ev)
+        {
+            if (ev.Player == null)
+                return;
+
+            RoleTypeId roleType = ev.Player.Role;
+
+            switch (roleType)
+            {
+                case RoleTypeId.Scp049:
+                case RoleTypeId.Scp0492:
+                case RoleTypeId.Scp079:
+                case RoleTypeId.Scp096:
+                case RoleTypeId.Scp106:
+                case RoleTypeId.Scp173:
+                    if (SCPCount.ContainsKey(roleType))
+                    {
+                        SCPCount[roleType]++;
+                        Log.Debug($"[AutoBreach] {roleType} spawned. Total count: {SCPCount[roleType]}");
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        // Breaching SCP : 096, 173, 049
         public void OnInteractingDoor(InteractingDoorEventArgs ev)
         {
-            if (ev.Door.Type == DoorType.Scp096 && Player.List.Any(p => p.Role.Type == RoleTypeId.Scp096) ||
-                ev.Door.Type == DoorType.Scp049Gate && Player.List.Any(p => p.Role.Type == RoleTypeId.Scp049) ||
-                ev.Door.Type == DoorType.Scp173Gate && Player.List.Any(p => p.Role.Type == RoleTypeId.Scp173))
-            {
-                ev.Player.ShowHint("[AutoBreach] That SCP is already breached");
-                return;
-            }
+            DoorType doorType = ev.Door.Type;
 
+            switch (doorType)
+            {
+                case DoorType.Scp096:
+                    if ((SCPCount.TryGetValue(RoleTypeId.Scp096, out int count096) && count096 >= 1) ||
+                        Player.List.Any(p => p.Role.Type == RoleTypeId.Scp096))
+                    {
+                        ev.Player.ShowHint("[AutoBreach] SCP-096 is already breached.");
+                        Log.Debug("[AutoBreach] SCP-096 is already breached.");
+                        ev.IsAllowed = false;
+                        return;
+                    }
+                    break;
+
+                case DoorType.Scp049Gate:
+                    if ((SCPCount.TryGetValue(RoleTypeId.Scp049, out int count049) && count049 >= 1) ||
+                        Player.List.Any(p => p.Role.Type == RoleTypeId.Scp049))
+                    {
+                        ev.Player.ShowHint("[AutoBreach] SCP-049 is already breached.");
+                        Log.Debug("[AutoBreach] SCP-049 is already breached.");
+                        ev.IsAllowed = false;
+                        return;
+                    }
+                    break;
+
+                case DoorType.Scp173NewGate:
+                    if ((SCPCount.TryGetValue(RoleTypeId.Scp173, out int count173) && count173 >= 1) ||
+                        Player.List.Any(p => p.Role.Type == RoleTypeId.Scp173))
+                    {
+                        ev.Player.ShowHint("[AutoBreach] SCP-173 is already breached.");
+                        Log.Debug("[AutoBreach] SCP-173 is already breached.");
+                        ev.IsAllowed = false;
+                        return;
+                    }
+                    break;
+
+            }
 
             if (ev == null || ev.Player == null)
             return;
@@ -45,14 +119,11 @@ namespace AutoBreach
 
             if (spectators.Count > 0)
             {
+                Log.Debug($"There are {spectators.Count} spectators");
                 var randomSpectator = spectators[UnityEngine.Random.Range(0, spectators.Count)];
 
-                // Doors
-                var scp096Door = Door.Get(Exiled.API.Enums.DoorType.Scp096);
-                var scp173Door = Door.Get(Exiled.API.Enums.DoorType.Scp173NewGate);
-                var scp049Door = Door.Get(Exiled.API.Enums.DoorType.Scp049Gate);
-
-                if (ev.Door == scp096Door)
+                // 096
+                if (ev.Door.Type == DoorType.Scp096)
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp096);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP096!");
@@ -67,11 +138,11 @@ namespace AutoBreach
                         damageableDoor.IsDestroyed = true;
                         Log.Debug($"[AutoBreach] Door: {ev.Door.Name} Destroyed .");
                     }
-
-
+                    ev.IsAllowed = false;
                 }
 
-                if (ev.Door == scp173Door)
+                // 173 Scp173NewGate is bugged, In the Next release of Exiled i will fix it
+                else if (ev.Door.Type == DoorType.Scp173NewGate)
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp173);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP173!");
@@ -85,10 +156,12 @@ namespace AutoBreach
                         damageableDoor.IsDestroyed = true;
                         Log.Debug($"[AutoBreach] Door: {ev.Door.Name} Destroyed .");
                     }
-
-
+                    ev.IsAllowed = false;
+                    ev.Door.IsOpen = true;
                 }
-                if (ev.Door == scp049Door)
+
+                // 049 is bugged, In the Next release of Exiled i will fix it
+                else if (ev.Door.Type == DoorType.Scp049Gate)
                 {
                     randomSpectator.Role.Set(RoleTypeId.Scp049);
                     Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP049!");
@@ -102,9 +175,9 @@ namespace AutoBreach
                         damageableDoor.IsDestroyed = true;
                         Log.Debug($"[AutoBreach] Door: {ev.Door.Name} Destroyed .");
                     }
-
+                    ev.IsAllowed = false;
+                    ev.Door.IsOpen = true;
                 }
-
             }
         }
         // Breaching SCP079
@@ -112,8 +185,9 @@ namespace AutoBreach
         {
             if (ev == null || ev.Player == null)
                 return;
+            if ((!SCPCount.TryGetValue(RoleTypeId.Scp079, out int count079) && count079 >= 1) || !Player.List.Any(p => p.Role.Type == RoleTypeId.Scp173))
+                return;
 
-            
             bool anyGeneratorActivated = Generator.List.Any(gen => gen.IsReady);
 
             if (anyGeneratorActivated)
@@ -129,6 +203,78 @@ namespace AutoBreach
                         Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
                 }
             }
+        }
+        // Breaching SCP: 106, 939
+        public void RoomBlackout(RoomBlackoutEventArgs ev)
+        {
+            if (ev == null || ev.Player == null)
+                return;
+
+            var spectators = Player.List.Where(p => p.Role == RoleTypeId.Spectator).ToList();
+            if (spectators.Count == 0)
+                return;
+
+            // 106
+            if (ev.Room.Type == RoomType.Hcz106)
+            {
+                if (!BlackoutCount.ContainsKey(RoleTypeId.Scp106))
+                    BlackoutCount[RoleTypeId.Scp106] = 0;
+
+                BlackoutCount[RoleTypeId.Scp106]++;
+                Log.Debug($"{ev.Scp079.Name} Did {BlackoutCount[RoleTypeId.Scp106]} in the cell of 106");
+
+                if (BlackoutCount.TryGetValue(RoleTypeId.Scp106, out int blackoutcount106) && blackoutcount106 >= 3)
+                {
+                    if (SCPCount.TryGetValue(RoleTypeId.Scp106, out int count106) && count106 >= 1 || Player.List.Any(p => p.Role.Type == RoleTypeId.Scp106))
+                    {
+                        ev.Player.ShowHint("[AutoBreach] SCP-106 is already breached.");
+                        Log.Debug("[AutoBreach] SCP-106 is already breached.");
+                        return;
+                    }
+                    var randomSpectator = spectators[UnityEngine.Random.Range(0, spectators.Count)];
+
+                    randomSpectator.Role.Set(RoleTypeId.Scp106);
+                    Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP-106!");
+
+                    if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp106, out var cassieMsg))
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
+                }
+            }
+            // 939
+            if (ev.Room.Type == RoomType.Hcz939)
+            {
+                if (!BlackoutCount.ContainsKey(RoleTypeId.Scp939))
+                    BlackoutCount[RoleTypeId.Scp939] = 0;
+
+                BlackoutCount[RoleTypeId.Scp939]++;
+                Log.Debug($"{ev.Scp079.Name} Did {BlackoutCount[RoleTypeId.Scp939]} in the cell of 106");
+
+                if (BlackoutCount.TryGetValue(RoleTypeId.Scp939, out int blackoutcount939) && blackoutcount939 >= 3)
+                {
+                    if (SCPCount.TryGetValue(RoleTypeId.Scp939, out int count939) && count939 >= 1 || Player.List.Any(p => p.Role.Type == RoleTypeId.Scp939))
+                    {
+                        ev.Player.ShowHint("[AutoBreach] SCP-939 is already breached.");
+                        Log.Debug("[AutoBreach] SCP-939 is already breached.");
+                        return;
+                    }
+                    var randomSpectator = spectators[UnityEngine.Random.Range(0, spectators.Count)];
+
+                    randomSpectator.Role.Set(RoleTypeId.Scp939);
+                    Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP-939!");
+
+                    if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp939, out var cassieMsg))
+                        Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
+                }
+            }
+        }
+        public void RoundEnd(RoundEndedEventArgs ev)
+        {
+            var keysSCPCount = SCPCount.Keys.ToList();
+            foreach (var key in keysSCPCount)
+                SCPCount[key] = 0;
+            var keysBlackoutCount = BlackoutCount.Keys.ToList();
+            foreach (var key in keysBlackoutCount)
+                BlackoutCount[key] = 0;
         }
     } 
 }
