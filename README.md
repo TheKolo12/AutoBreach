@@ -28,7 +28,7 @@ This plugin creates a more **organic breach system**, especially useful for **ev
 
 ### Requirements
 
-* **EXILED API v9.6.2 or newer**
+* **EXILED API v9.6.0 or newer**
 * SCP\:SL server with plugin support
 
 ### Installation
