@@ -17,9 +17,12 @@ namespace AutoBreach
         public List<CassieMessage> CassieMessages { get; set; } = new()
         {
             new CassieMessage { Role = RoleTypeId.Scp096, Content = "SCP-096 Has broke the containment!", Message = "SCP-096 Has broke the containment!" },
-            new CassieMessage { Role = RoleTypeId.Scp173, Content = "SCP-173 Has broke the containment!", Message = "SCP-096 Has broke the containment!" },
-            new CassieMessage { Role = RoleTypeId.Scp049, Content = "SCP-049 Has broke the containment", Message = "SCP-096 Has broke the containment!" },
-            new CassieMessage { Role = RoleTypeId.Scp079, Content = "SCP-079 has breached the facility!", Message = "SCP-096 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp173, Content = "SCP-173 Has broke the containment!", Message = "SCP-173 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp049, Content = "SCP-049 Has broke the containment", Message = "SCP-049 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp079, Content = "SCP-079 has breached the facility!", Message = "SCP-079 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp939, Content = "SCP-939 has breached the facility!", Message = "SCP-939 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp106, Content = "SCP-106 has breached the facility!", Message = "SCP-106 Has broke the containment!" },
+
         };
     }
 }
