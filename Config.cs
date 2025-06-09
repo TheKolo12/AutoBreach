@@ -24,5 +24,9 @@ namespace AutoBreach
             new CassieMessage { Role = RoleTypeId.Scp106, Content = "SCP-106 has breached the facility!", Message = "SCP-106 Has broke the containment!" },
 
         };
+        [Description("Configs")]
+        public bool OverwatchPriority { get; set; } = false;
+        public DoorType Scp3114DoorType { get; set; } = DoorType.GR18Inner ;
+
     }
 }
