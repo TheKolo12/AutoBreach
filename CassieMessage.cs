@@ -1,4 +1,4 @@
-using PlayerRoles;
+﻿using PlayerRoles;
 
 namespace AutoBreach
 {

@@ -1,4 +1,4 @@
-using AutoBreach;
+﻿using AutoBreach;
 using Exiled.API.Features;
 using Exiled.Events.Handlers;
 using PlayerRoles;
@@ -15,7 +15,7 @@ namespace AutoBreach
         public override string Author => "Kolo";
         public override string Prefix => "AutoBreach";
         public override Version RequiredExiledVersion => new Version(9, 6, 0);
-        public override Version Version => new Version(2, 0, 0);
+        public override Version Version => new Version(2, 0, 2);
 
         public static Main Instance { get; private set; }
         public static Dictionary<RoleTypeId, CassieMessage> CassieMessagesMap { get; private set; }
@@ -27,7 +27,7 @@ namespace AutoBreach
             Instance = this;
             _eventHandlers = new AutoBreachEventHandler();
             CassieMessagesMap = Config.CassieMessages.ToDictionary(msg => msg.Role);
-            RegisterEvent(); 
+            RegisterEvent();
             base.OnEnabled();
         }
         public override void OnDisabled()
@@ -53,6 +53,7 @@ namespace AutoBreach
             Handler.Player.Spawned -= _eventHandlers.OnSpawned;
             Handler.Server.RoundEnded -= _eventHandlers.RoundEnd;
             Handler.Scp079.RoomBlackout -= _eventHandlers.RoomBlackout;
+            Handler.Server.RoundEnded -= _eventHandlers.RoundEnd;
         }
     }
 }

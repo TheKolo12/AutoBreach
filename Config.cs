@@ -1,4 +1,4 @@
-using Exiled.API.Enums;
+﻿using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using PlayerRoles;
 using System.Collections.Generic;
@@ -22,11 +22,12 @@ namespace AutoBreach
             new CassieMessage { Role = RoleTypeId.Scp079, Content = "SCP-079 has breached the facility!", Message = "SCP-079 Has broke the containment!" },
             new CassieMessage { Role = RoleTypeId.Scp939, Content = "SCP-939 has breached the facility!", Message = "SCP-939 Has broke the containment!" },
             new CassieMessage { Role = RoleTypeId.Scp106, Content = "SCP-106 has breached the facility!", Message = "SCP-106 Has broke the containment!" },
+            new CassieMessage { Role = RoleTypeId.Scp3114, Content = "SCP-3114 has breached the facility!", Message = "SCP-3114 Has broke the containment!" },
 
         };
         [Description("Configs")]
         public bool OverwatchPriority { get; set; } = false;
-        public DoorType Scp3114DoorType { get; set; } = DoorType.GR18Inner ;
+        public DoorType Scp3114DoorType { get; set; } = DoorType.GR18Inner;
 
     }
 }
