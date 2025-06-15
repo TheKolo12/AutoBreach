@@ -14,7 +14,7 @@ namespace AutoBreach
         public override string Name => "AutoBreach";
         public override string Author => "Kolo";
         public override string Prefix => "AutoBreach";
-        public override Version RequiredExiledVersion => new Version(9, 6, 0);
+        public override Version RequiredExiledVersion => new Version(9, 6, 1);
         public override Version Version => new Version(2, 0, 2);
 
         public static Main Instance { get; private set; }

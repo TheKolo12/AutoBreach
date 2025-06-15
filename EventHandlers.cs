@@ -14,6 +14,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Collections.Generic;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Events.EventArgs.Scp079;
+using UnityEngine;
 
 namespace AutoBreach
 {
@@ -93,7 +94,6 @@ namespace AutoBreach
                     {
                         ev.Player.ShowHint("[AutoBreach] SCP-096 is already breached.");
                         Log.Debug("[AutoBreach] SCP-096 is already breached.");
-                        ev.IsAllowed = false;
                         return;
                     }
                     break;
@@ -104,7 +104,6 @@ namespace AutoBreach
                     {
                         ev.Player.ShowHint("[AutoBreach] SCP-049 is already breached.");
                         Log.Debug("[AutoBreach] SCP-049 is already breached.");
-                        ev.IsAllowed = false;
                         return;
                     }
                     break;
@@ -115,7 +114,6 @@ namespace AutoBreach
                     {
                         ev.Player.ShowHint("[AutoBreach] SCP-173 is already breached.");
                         Log.Debug("[AutoBreach] SCP-173 is already breached.");
-                        ev.IsAllowed = false;
                         return;
                     }
                     break;
@@ -136,8 +134,6 @@ namespace AutoBreach
             if (ev == null || ev.Player == null)
                 return;
 
-
-            var player = ev.Player;
 
             var spectators = Player.List.Where(p => p.Role == RoleTypeId.Spectator).ToList();
             var spectatorVip = Player.List.Where(p => p.Role == RoleTypeId.Overwatch).ToList();
@@ -247,19 +243,39 @@ namespace AutoBreach
                         if (spectatorVip.Count > 0)
                         {
                             randomSpectatorVip.Role.Set(RoleTypeId.Scp3114);
+                            Timing.CallDelayed(0.5f, () =>
+                            {
+                                randomSpectatorVip.Position = new Vector3(40.77f, 100.99f, 42.41f);
+                                Log.Info($"{randomSpectatorVip} telepo");
+                            });
                             Log.Debug($"[AutoBreach] {randomSpectatorVip.Nickname} has become SCP-3114!");
                         }
                         else
                         {
                             randomSpectator.Role.Set(RoleTypeId.Scp3114);
+                            if (ev.Player.Role.Type == RoleTypeId.Scp3114)
+                            {
+
+                                Timing.CallDelayed(0.5f, () =>
+                                {
+                                    randomSpectator.Position = new Vector3(40.77f, 100.99f, 42.41f);
+                                    Log.Info($"{randomSpectator} telepo");
+                                });
+                            }
                             Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP-3114!");
                         }
                     }
                     else
                     {
                         randomSpectator.Role.Set(RoleTypeId.Scp3114);
+                        Timing.CallDelayed(0.5f, () =>
+                        {
+                            randomSpectator.Position = new Vector3(40.77f, 100.99f, 42.41f);
+                            Log.Info($"{randomSpectator} telepo");
+                        });
                         Log.Debug($"[AutoBreach] {randomSpectator.Nickname} has become SCP-3114!");
                     }
+
                     DoorAlredyOpen[doorType]++;
                     if (Main.CassieMessagesMap.TryGetValue(RoleTypeId.Scp3114, out var cassieMsg))
                         Cassie.MessageTranslated(cassieMsg.Content, cassieMsg.Message, false, true, true);
